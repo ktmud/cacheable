@@ -1,6 +1,6 @@
 # Redis Cached
 
-Provide a function wrapper for to cache return vals into redis.
+Provide a function wrapper  to cache return vals into redis.
 
 Only support async calls.
 
