@@ -3,12 +3,12 @@
 Cache manager that doesn't suck.
 
 Add a cache wrapper for your functions, automatically pickle and unpickle the data.
-All you have to do is remember when to clear the cache.
+Manage all cache keys in one place, use a simple `._clearCache()` to purge cache.
 
 
 ## Usage
 
-Basic:
+As a simple cache getter/setter with key prefix support:
 
 ```javascript
 var Redis = require('redis');
@@ -23,26 +23,32 @@ var cached = Cached(client, {
 cached.set(key, value, callback)
 cached.set(key, value, 300, callback)
 cached.get(key, callback)
+cached.del(['abc', 'aba'], callback)
 ```
 
-Wraping a function to add cache:
+Wraping a function to cache and automatically use cache:
+
+```javascript
+// Get remote content that expires in 3600 seconds
+var getUrlContent = cached.wrap(function(url, callback) {
+    request(url, function() {
+      // ...
+    })
+}, 'url-{0}', 3600)
+```
+
+Manage cache for your models:
 
 ```
 function User(data) {
   this.attributes = data
 }
 
-// register a constructor class for object pickle and unpickle
-// All classes must implement a `toJSON` method,
-// and `new Class(json)` must be a valid object
-// But you can always define how to pickle and unpickle an object,
-// see blow.
-cached.register(User)
-
 User.prototype.toJSON = function() {
   return this.attributes
 }
 
+// get user by id
 User.get = function(user_id, callback) {
   // get the user from data base
   // ...
@@ -51,23 +57,21 @@ User.get = function(user_id, callback) {
   callback(err, user);
 }
 
-// Make a class method cached
-User.enableCache('get')
-
-// You can also enable cache for an instance method
 User.prototype.getPostIds = function(start, limit, callback) {
-  // get user's posts
   callback(null, [1,2,3...])
 }
 
+// register the constructor first
+cached.register(User)
+
+// enable cache for `User.get` method
+User.enableCache('get', 'user-{0}') // '{0}' means the `arguments[0]`
+// mark the class method cachekey also as an item cachekey
+User.itemCacheKeys.push('user-{this.id}')  // `{this.id}` means getting an instance's `this.id`
+
+// You can also enable cache for an instance method
 User.enableCache('.getPostIds', 'posts-{0}-{1}')
 
-
-// Or just a simple function
-function request(url, callback) {
-  // ...
-}
-request = cached.wrap(request, 'get-url')
 ```
 
 ## API
