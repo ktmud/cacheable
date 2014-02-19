@@ -52,7 +52,7 @@ User.get = function(user_id, callback) {
 }
 
 // Make a class method cached
-User.addCache('get')
+User.enableCache('get')
 
 // You can also enable cache for an instance method
 User.prototype.getPostIds = function(start, limit, callback) {
@@ -60,7 +60,7 @@ User.prototype.getPostIds = function(start, limit, callback) {
   callback(null, [1,2,3...])
 }
 
-User.addCache('.getPostIds', 'posts-{0}-{1}')
+User.enableCache('.getPostIds', 'posts-{0}-{1}')
 
 
 // Or just a simple function
@@ -72,26 +72,27 @@ request = cached.wrap(request, 'get-url')
 
 ## API
 
-### cached.register(cls, options)
+### cached.register(cls, name)
 
-You have to `register` the constructor class, so when cache is hit, the cached manager would know
+You have to `register` all model constructors, so when cache is hit, the cached manager would know
 how to restore the data as a proper JavaScript Object.
 
-If your constructor function doesn't have a name, you can set a name in `options`.
-The register method will set the constructor function's name for you.
+If your model constructor doesn't have a name, you can give a name as the second parameter,
+then cached will use this name.
 
 ```javascript
 var Book = function() {
 }
 cached.register(Book, 'Book')
-
-console.log(Book.name == 'Book')  // true
 ```
 
-Your class.prototype should have a `.toJSON` method, or a private `._pickle` method,
-so the cache wrapper could know how to save it to cache.
+Your class.prototype must have a `.toJSON` method, so the cache wrapper could know how to save it to cache.
+The `.toJSON` will be extended by `cache.register`, the output object will always have a property `__cachedname`,
+as is the constructor's modelName. You can always add a `.toObject = .toJSON`, and always use `.toObject`
+when you need a clean object.
 
-If an `._unpickle` method is defined, it will be called each time the object is loaded from cache.
+
+If an `._unpickle` method is also defined, it will be called each time the object is restored from cache.
 
 That is:
 
@@ -100,12 +101,10 @@ var item = new User(json)
 item._unpickle()
 return item
 ```
+Note that it would be impossible to unpickle a cache if the constructor's name was changed.
 
-Note that it would be impossible to unpickle the cache properly 
-if a constructor's name is changed.
-
-When registered, the class will have a property of `._cacheKeys` and an instance would have a function
-of `._clearCache()`.
+When registered, the class will have a property `._cacheKeys` and an instance would have
+a method `._clearCache()`.
 
 ```javascript
 User.prototype.destroy = function(callback) {
@@ -128,13 +127,7 @@ The parameter `key` is a pattern for formatting real cache keys.
 
 The default `key` is:
 
-    {this.name}:{_fn_}:{0}
-
-which should be usable for most class methods.
-
-
-You can use literal `{this}` in the key pattern, which is `this` itself in the scope while the cache 
-function is called. You can also use a dot `.` to 
+    {_model_}:{_fn_}:{0}
 
 `{_fn_}` is the name of the function `fn`. If not found, an error will throw.
 So you'd better alway name your functions, like this:
@@ -145,11 +138,15 @@ User.get = function get(id) {
 }
 ```
 
+`{_model_}` equals to `{this.name}`, which is `this.modelName || this.name` in the scope when the function is called.
+For a class method, this usually means the name of a constructor.
+
 Numbers like `{0}` is indexes of arguments when the function is called.
 
-### cls.addCache(methodName, [key], [ttl])
 
-When a `cls` is registered, you can use `cls.addCache` to enable cache for class/instance methods.
+### cls.enableCache(methodName, [key], [ttl])
+
+When a `cls` is registered, you can use `cls.enableCache` to enable cache for class/instance methods.
 
 If `methodName` starts with a dot `(.)`, it will be considered as an instance method, otherwise,
 it's a class method.
@@ -173,16 +170,16 @@ User.prototype.getPostIds = function(start, limit, callback) {
   callback(null, [1,2,3...])
 }
 
-User.addCache('getAllIds', 'ids-{0.limit}-{0.offset}')
+User.enableCache('getAllIds', 'ids-{0.limit}-{0.offset}')
 
-User.addCache('.getPostIds', 'posts-{0}-{1}')
+User.enableCache('.getPostIds', 'posts-{0}-{1}')
 ```
 
 It is strongly recommended to use this approach to add cache, instead of directly call `cached.wrap`.
 
 For an instance method, the default `key` would be:
 
-    {this.constructor.name}:{this.id}:{_fn_}
+    {_model_}:{this.id}:{_fn_}
 
 
 ## TODO
