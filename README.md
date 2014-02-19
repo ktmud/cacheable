@@ -8,8 +8,6 @@ Manage all cache keys in one place, use a simple `._clearCache()` to purge cache
 
 ## Usage
 
-As a simple cache getter/setter with key prefix support:
-
 ```javascript
 var Redis = require('redis');
 var Cached = require('redis-cached');
@@ -26,7 +24,7 @@ cached.get(key, callback)
 cached.del(['abc', 'aba'], callback)
 ```
 
-Wraping a function to cache and automatically use cache:
+Wraping an async function:
 
 ```javascript
 // Get remote content that expires in 3600 seconds
@@ -39,7 +37,7 @@ var getUrlContent = cached.wrap(function(url, callback) {
 
 Manage cache for your models:
 
-```
+```javascript
 function User(data) {
   this.attributes = data
 }
@@ -69,7 +67,6 @@ User.enableCache('get', '{_model_}:{0}') // '{0}' means the `arguments[0]`
 
 // You can also enable cache for an instance method
 User.enableCache('.getPostIds', '{_model_}:posts-{0}-{1}')
-
 ```
 
 ## API
@@ -90,8 +87,7 @@ cached.register(Book, 'Book')
 
 Your class.prototype must have a `.toJSON` method, so the cache wrapper could know how to save it to cache.
 The `.toJSON` will be extended by `cache.register`, the output object will always have a property `__cachedname`,
-as is the constructor's modelName. You can always add a `.toObject = .toJSON`, and always use `.toObject`
-when you need a clean object.
+as is the constructor's modelName. You can add a `.toObject = .toJSON`, and use `.toObject` whenever you need a clean object.
 
 
 If an `._unpickle` method is also defined, it will be called each time the object is restored from cache.
