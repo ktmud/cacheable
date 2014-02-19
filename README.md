@@ -65,12 +65,10 @@ User.prototype.getPostIds = function(start, limit, callback) {
 cached.register(User)
 
 // enable cache for `User.get` method
-User.enableCache('get', 'user-{0}') // '{0}' means the `arguments[0]`
-// mark the class method cachekey also as an item cachekey
-User.itemCacheKeys.push('user-{this.id}')  // `{this.id}` means getting an instance's `this.id`
+User.enableCache('get', '{_model_}:{0}') // '{0}' means the `arguments[0]`
 
 // You can also enable cache for an instance method
-User.enableCache('.getPostIds', 'posts-{0}-{1}')
+User.enableCache('.getPostIds', '{_model_}:posts-{0}-{1}')
 
 ```
 
