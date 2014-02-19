@@ -129,7 +129,7 @@ The parameter `key` is a pattern for formatting real cache keys.
 
 The default `key` is:
 
-    {_model_}:{_fn_}:{0}
+    {_model_}:{_fn_}:%j{0}
 
 `{_fn_}` is the name of the function `fn`. If not found, an error will throw.
 So you'd better alway name your functions, like this:
@@ -144,6 +144,7 @@ User.get = function get(id) {
 For a class method, this usually means the name of a constructor.
 
 Numbers like `{0}` is indexes of arguments when the function is called.
+`%j{0}` mean the first argument value will be converted to json.
 
 
 ### cls.enableCache(methodName, [key], [ttl])
