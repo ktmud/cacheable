@@ -1,19 +1,26 @@
 {
-  "name": "redis-cached",
-  "version": "0.0.1",
+  "name": "cached",
+  "version": "0.1.0",
   "description": "A cache wrapper with redis",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "debug": "0.7.x"
+  },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ktmud/redis-cached.git"
+    "url": "git://github.com/ktmud/cached.git"
   },
   "keywords": [
     "redis",
-    "cache"
+    "redis-cache",
+    "cache",
+    "cached",
+    "cache-manage",
+    "cache-client"
   ],
   "author": "Jesse Yang <kissmud@gmail.com>",
-  "license": "BSD"
+  "license": "MIT"
 }
