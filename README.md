@@ -1,8 +1,8 @@
-# Cached
+# Cacheable
 
 Cache manager that doesn't suck.
 
-Add a cache wrapper for your functions, automatically pickle and unpickle the data.
+Make the result of you async functions cacheable, automatically pickle and unpickle the data.
 Manage all cache keys in one place, use a simple `._clearCache()` to purge cache.
 
 
@@ -10,10 +10,11 @@ Manage all cache keys in one place, use a simple `._clearCache()` to purge cache
 
 ```javascript
 var Redis = require('redis');
-var Cached = require('redis-cached');
+var Cacheable = require('cacheable');
 
 var client = Redis.createClient();
-var cached = Cached(client, {
+var cached = Cacheable({
+  client: client,
   ttl: 60, // set a default max age of one minute for `cached.set`
   prefix: 'myapp:' // the prefix for every cache key
 });
@@ -183,7 +184,7 @@ For an instance method, the default `key` would be:
 
 ## TODO
 
-Make this package compatible with other cache client, rather than only redis right now.
+Make this package compatible with other cache backend, rather than only redis right now.
 
 
 ## License

@@ -1,6 +1,6 @@
 {
-  "name": "cached",
-  "version": "1.1.2",
+  "name": "cacheable",
+  "version": "0.1.0",
   "description": "A cache wrapper with redis",
   "main": "index.js",
   "scripts": {
@@ -16,10 +16,9 @@
   "keywords": [
     "redis",
     "redis-cache",
+    "cacheable",
     "cache",
-    "cached",
-    "cache-manage",
-    "cache-client"
+    "cached"
   ],
   "author": "Jesse Yang <kissmud@gmail.com>",
   "license": "MIT"
