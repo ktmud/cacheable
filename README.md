@@ -182,10 +182,6 @@ For an instance method, the default `key` would be:
     {_model_}:{this.id}:{_fn_}
 
 
-## TODO
-
-Make this package compatible with other cache backend, rather than only redis right now.
-
 
 ## License
 

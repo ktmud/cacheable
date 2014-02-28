@@ -1,1 +1,1 @@
-module.exports = require('./lib/cached.js');
+module.exports = require('./lib/cacheable.js');
