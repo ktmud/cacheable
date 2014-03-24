@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "debug": "0.7.x",
+    "keyf": "~0.0.1",
     "storeman": "~0.0.1"
   },
   "devDependencies": {
