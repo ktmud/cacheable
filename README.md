@@ -64,6 +64,8 @@ User.prototype.getPostIds = function(start, limit, callback) {
 cached.register(User)
 
 // enable cache for `User.get` method
+// So when you call `User.get(some_id)`, it will fetch data
+// from cache first, when cache not found, then the original function will be called.
 User.enableCache('get', '{_model_}:{0}') // '{0}' means the `arguments[0]`
 
 // You can also enable cache for an instance method
