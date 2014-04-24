@@ -175,14 +175,13 @@ User.prototype.getPostIds = function(start, limit, callback) {
 User.enableCache('getAllIds', 'ids-{0.limit}-{0.offset}')
 
 User.enableCache('.getPostIds', 'posts-{0}-{1}')
+
+// You can omit the key, cacheable will automatically use the method name
+User.enableCache('.getPostIds', 3600)
+// KEY: '{_model_}:{id}:getTagsIds', expires in: 3600 seconds
 ```
 
 It is strongly recommended to use this approach to add cache, instead of directly call `cached.wrap`.
-
-For an instance method, the default `key` would be:
-
-    {_model_}:{this.id}:{_fn_}
-
 
 
 ## License
