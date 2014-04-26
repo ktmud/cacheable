@@ -4,15 +4,16 @@
   "description": "A cache wrapper with redis",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/bin/mocha"
+    "test": "./node_modules/.bin/mocha"
   },
   "dependencies": {
     "debug": "0.7.x",
     "keyf": "~0.0.1",
-    "storeman": "~0.0.1"
+    "storeman": "~0.1.0"
   },
   "devDependencies": {
-    "mocha": "*"
+    "mocha": "*",
+    "istanbul": "*"
   },
   "repository": {
     "type": "git",
