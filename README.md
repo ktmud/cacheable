@@ -128,7 +128,7 @@ The parameter `key` is a pattern for formatting real cache keys.
 
 The default `key` is:
 
-    {_model_}:{_fn_}:%j{0}
+    {_model_}:{_fn_}
 
 `{_fn_}` is the name of the function `fn`. If not found, an error will throw.
 So you'd better alway name your functions, like this:

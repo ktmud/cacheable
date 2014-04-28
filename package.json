@@ -13,6 +13,8 @@
   },
   "devDependencies": {
     "mocha": "*",
+    "should": "*",
+    "lru-cache": "*",
     "istanbul": "*"
   },
   "repository": {
