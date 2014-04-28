@@ -1,6 +1,6 @@
 {
   "name": "cacheable",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "A cache wrapper with redis",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   "dependencies": {
     "debug": "0.7.x",
     "keyf": "~0.0.1",
-    "storeman": "~0.1.0"
+    "storeman": "~0.1.1"
   },
   "devDependencies": {
     "mocha": "*",
